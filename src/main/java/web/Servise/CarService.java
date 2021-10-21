@@ -29,22 +29,9 @@ public class CarService {
 		carList.add(car4);
 	}
 
-	public List<Car> getCar(List<Car> carList, int count) {
-		List<Car> result;
-		switch (count){
-			case 1:result = carList.subList(0, 1);
-				break;
-			case 2:result = carList.subList(0, 2);
-				break;
-			case 3:result = carList.subList(0, 3);
-				break;
-			case 4:result = carList.subList(0, 4);
-				break;
-			case 5:result = carList.subList(0, 5);
-				break;
-			default:
-				return carList;
-		}
+	public List<Car> getCar(int count) {
+		List<Car> result = carList;
+		result = result.subList(0,count);
 		return result;
 	}
 }
