@@ -1,0 +1,9 @@
+web\Dao\UserDAO.class
+web\Model\User.class
+web\config\AppInit.class
+web\Dao\UserDAOImpl.class
+web\config\WebConfig.class
+web\controller\UserController.class
+web\Servise\UserService.class
+web\Servise\UserServiceImpl.class
+web\config\BackConfig.class
