@@ -12,8 +12,12 @@ import web.Servise.UserServiceImpl;
 @Transactional
 public class UserController {
 
+	private final UserServiceImpl userService;
+
 	@Autowired
-	private UserServiceImpl userService;
+	public UserController(UserServiceImpl userService) {
+		this.userService = userService;
+	}
 
 	@GetMapping("/")
 	public String allUser(Model model){
@@ -33,12 +37,6 @@ public class UserController {
 		return "redirect:/";
 	}
 
-	@GetMapping("/user-delete/{id}")
-	public String deleteUser(@PathVariable("id") Long id){
-		userService.delete(id);
-		return "redirect:/";
-	}
-
 	@GetMapping(value = "/{id}/user-update")
 	public String updateUserForm(@PathVariable("id") Long id,Model model){
 		User user = userService.getUser(id);
@@ -46,9 +44,15 @@ public class UserController {
 		return "user-update";
 	}
 
-	@PatchMapping("/{id}")
+	@PostMapping("/{id}")
 	public String updateUser(@ModelAttribute("user") User user){
 		userService.updateUser(user);
+		return "redirect:/";
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public String deleteUser(@PathVariable(value = "id") Long id){
+		userService.delete(id);
 		return "redirect:/";
 	}
 }

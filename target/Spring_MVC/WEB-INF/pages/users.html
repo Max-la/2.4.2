@@ -18,7 +18,11 @@
         <td th:utext = "${user.lastName}">lastName</td>
         <td th:utext = "${user.email}">email</td>
         <td><a th:href="@{/{id}/user-update(id=${user.getId()})}">Update</a></td>
-        <td><a th:href="@{/user-delete/{id}(id=${user.id})}">Delete</a> </td>
+        <td>
+            <form th:method="DELETE" th:action="@{/{id}(id=${user.getId()})}">
+                <input type="submit" value="Delete">
+            </form>
+        </td>
         </tr>
 </table>
 <p><a href="/new">Create User</a></p>

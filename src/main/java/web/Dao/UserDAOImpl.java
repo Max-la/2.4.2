@@ -4,13 +4,15 @@ import org.springframework.stereotype.Repository;
 import web.Model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
 public class UserDAOImpl implements UserDAO{
 
 	@PersistenceContext
-	private EntityManager entityManager;
+	public EntityManager entityManager;
 
 	@Override
 	public List<User> getAllUser() {
@@ -29,8 +31,7 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public void delete(Long id) {
-		User user = entityManager.find(User.class,id);
-		entityManager.remove(user);
+		entityManager.createQuery("delete from User where id = :id").setParameter("id",id).executeUpdate();
 	}
 
 	@Override
