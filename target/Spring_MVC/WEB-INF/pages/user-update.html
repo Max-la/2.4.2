@@ -12,8 +12,11 @@
     <label for="lastName">LastName</label>
     <input  type="text" th:field="*{lastName}" id="lastName" placeholder="LastName">
     <br/>
-    <label for="email">Email</label>
-    <input  type="text" th:field="*{email}" id="email" placeholder="Email">
+    <label for="password">Password</label>
+    <input  type="text" th:field="*{password}" id="password" placeholder="Password">
+    <br/>
+    <label for="role">Role</label>
+    <input  type="text" th:object="*{roles}" id="role" placeholder="Role">
     <br/>
     <input type="submit" value="Update User">
 </form>

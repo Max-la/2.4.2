@@ -1,18 +1,18 @@
 package web.Dao;
 
+
 import org.springframework.stereotype.Repository;
 import web.Model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Arrays;
-import java.util.Collections;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
 public class UserDAOImpl implements UserDAO{
 
 	@PersistenceContext
-	public EntityManager entityManager;
+	private EntityManager entityManager;
 
 	@Override
 	public List<User> getAllUser() {
@@ -37,5 +37,11 @@ public class UserDAOImpl implements UserDAO{
 	@Override
 	public void updateUser(User user) {
 		 entityManager.merge(user);
+	}
+
+	@Override
+	public User getUserByName(String name) {
+		TypedQuery<User> query = entityManager.createQuery("select u from User u where u.name = :name",User.class).setParameter("name",name);
+		return query.getSingleResult();
 	}
 }

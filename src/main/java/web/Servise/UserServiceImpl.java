@@ -11,6 +11,7 @@ public class UserServiceImpl implements UserService{
 
 	private final UserDAOImpl userDAO;
 
+
 	@Autowired
 	public UserServiceImpl(UserDAOImpl userDAO) {
 		this.userDAO = userDAO;
@@ -39,5 +40,10 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void updateUser(User user) {
 		userDAO.updateUser(user);
+	}
+
+	@Override
+	public User getUserByName(String name) {
+		return userDAO.getUserByName(name);
 	}
 }

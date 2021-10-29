@@ -1,10 +1,15 @@
 package web.Model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -13,15 +18,20 @@ public class User {
 	@Column
 	private  String lastName;
 	@Column
-	private String email;
+	private  String password;
+	@ManyToMany(targetEntity = Role.class ,fetch = FetchType.EAGER)
+	public Set<Role> roles;
+
 
 	public User() {
 	}
 
-	public User(String name, String lastName, String email) {
+	public User(long id, String name, String lastName, String password,Set<Role> role) {
+		this.id = id;
 		this.name = name;
 		this.lastName = lastName;
-		this.email = email;
+		this.password = password;
+		this.roles = role;
 	}
 
 	public long getId() {
@@ -48,12 +58,50 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public String getEmail() {
-		return email;
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return roles;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public String getPassword() {
+		return password;
+	}
+
+	@Override
+	public String getUsername() {
+		return name;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 	@Override
@@ -62,7 +110,8 @@ public class User {
 				"id=" + id +
 				", name='" + name + '\'' +
 				", lastName='" + lastName + '\'' +
-				", email='" + email + '\'' +
+				", password='" + password + '\'' +
+				", roles=" + roles +
 				'}';
 	}
 }

@@ -1,58 +1,42 @@
 package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import web.Model.User;
-import web.Servise.UserServiceImpl;
+import web.Servise.RoleService;
+import web.Servise.UserService;
 
 @Controller
-@Transactional
+@RequestMapping("/")
 public class UserController {
 
-	private final UserServiceImpl userService;
+    private UserService userService;
+    private RoleService roleService;
 
-	@Autowired
-	public UserController(UserServiceImpl userService) {
-		this.userService = userService;
-	}
+    @Autowired
+    public UserController(UserService userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
+    }
 
-	@GetMapping("/")
-	public String allUser(Model model){
-		model.addAttribute("getall",userService.getAllUser());
-		return "/users";
-	}
+    @GetMapping(value = "/")
+    public String getHomePage() {
+        return "index";
+    }
 
-	@GetMapping("/new")
-	public String newUser(Model model){
-		model.addAttribute("user",new User());
-		return "new";
-	}
+    @GetMapping(value = "/login")
+    public String getLoginPage() {
+        return "login";
+    }
 
-	@PostMapping()
-	public String create(@ModelAttribute("user") User user){
-		userService.add(user);
-		return "redirect:/";
-	}
-
-	@GetMapping(value = "/{id}/user-update")
-	public String updateUserForm(@PathVariable("id") Long id,Model model){
-		User user = userService.getUser(id);
-		model.addAttribute("user",user);
-		return "user-update";
-	}
-
-	@PostMapping("/{id}")
-	public String updateUser(@ModelAttribute("user") User user){
-		userService.updateUser(user);
-		return "redirect:/";
-	}
-
-	@DeleteMapping(value = "/{id}")
-	public String deleteUser(@PathVariable(value = "id") Long id){
-		userService.delete(id);
-		return "redirect:/";
-	}
+    @GetMapping(value = "/user")
+    public String getUserPage(Model model,@AuthenticationPrincipal User user) {
+        model.addAttribute("user",user);
+        model.addAttribute("roles",roleService.getRole().toString());
+        return "user/user";
+    }
 }
