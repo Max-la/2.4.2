@@ -19,19 +19,24 @@ public class User implements UserDetails {
 	private  String lastName;
 	@Column
 	private  String password;
-	@ManyToMany(targetEntity = Role.class ,fetch = FetchType.EAGER)
-	public Set<Role> roles;
 
+	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+	public Set<Role> roles;
 
 	public User() {
 	}
 
-	public User(long id, String name, String lastName, String password,Set<Role> role) {
+	public User(String name, String lastName, String password) {
+		this.name = name;
+		this.lastName = lastName;
+		this.password = password;
+	}
+
+	public User(Long id , String name, String lastName, String password) {
 		this.id = id;
 		this.name = name;
 		this.lastName = lastName;
 		this.password = password;
-		this.roles = role;
 	}
 
 	public long getId() {
@@ -110,8 +115,7 @@ public class User implements UserDetails {
 				"id=" + id +
 				", name='" + name + '\'' +
 				", lastName='" + lastName + '\'' +
-				", password='" + password + '\'' +
-				", roles=" + roles +
+				", password='" + password +
 				'}';
 	}
 }

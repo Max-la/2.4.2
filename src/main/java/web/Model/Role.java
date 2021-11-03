@@ -1,5 +1,7 @@
 package web.Model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -9,7 +11,7 @@ import java.util.Set;
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column
 	private String name;
@@ -17,6 +19,10 @@ public class Role implements GrantedAuthority {
 	public Set<User> users;
 
 	public Role() {
+	}
+
+	public Role(String name) {
+		this.name = name;
 	}
 
 	public Role(Long id, String name) {

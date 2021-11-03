@@ -2,12 +2,14 @@ package web.Servise;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import web.Dao.RoleDao;
 import web.Model.Role;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class RoleServiceImpl implements RoleService{
 
 	public final RoleDao roleDao;
@@ -32,10 +34,7 @@ public class RoleServiceImpl implements RoleService{
 		roleDao.updateRole(role);
 	}
 
-	@Override
-	public void delete(Long id) {
-		roleDao.delete(id);
-	}
+
 
 	@Override
 	public Role getRoleByName(String name) {

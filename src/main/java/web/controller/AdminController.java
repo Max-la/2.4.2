@@ -2,28 +2,26 @@ package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.Model.Role;
 import web.Model.User;
 import web.Servise.RoleService;
-import web.Servise.UserServiceImpl;
+import web.Servise.UserService;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Controller
-@Transactional
 @RequestMapping("/admin")
 public class AdminController {
 
-	private final UserServiceImpl userService;
+	private final UserService userService;
 
 	private final RoleService roleService;
 
 	@Autowired
-	public AdminController(UserServiceImpl userService, RoleService roleService) {
+	public AdminController(UserService userService, RoleService roleService) {
 		this.userService = userService;
 		this.roleService = roleService;
 	}
@@ -36,7 +34,7 @@ public class AdminController {
 	}
 
 	@GetMapping("/new")
-	public String newUser(Model model, Role role){
+	public String newUser(Model model){
 		List<Role> roles = roleService.getRole();
 		model.addAttribute("user",new User());
 		roles.forEach(System.out::println);
@@ -49,13 +47,13 @@ public class AdminController {
 			@ModelAttribute("user") User user){
 		Set<Role> roles = new HashSet<>();
 		if (ADMIN != null){
-			roles.add(new Role(2L,ADMIN));
+			roles.add(new Role(1L,ADMIN));
 		}
 		if (USER != null){
-			roles.add(new Role(1L,USER));
+			roles.add(new Role(2L,USER));
 		}
 		if (ADMIN == null && USER == null){
-			roles.add(new Role(1L,USER));
+			roles.add(new Role(2L,USER));
 		}
 		user.setRoles(roles);
 		userService.add(user);
@@ -70,19 +68,19 @@ public class AdminController {
 		return "/admin/user-update";
 	}
 
-	@PostMapping("/{id}")
+	@PutMapping("/{id}")
 	public String updateUser(@RequestParam(value = "ADMIN",required = false) String ADMIN,
 	                         @RequestParam(value = "USER",required = false) String USER,
 			@ModelAttribute("user") User user){
 		Set<Role> roles1 = new HashSet<>();
 		if (ADMIN != null){
-			roles1.add(new Role(2L,ADMIN));
+			roles1.add(new Role(1L,ADMIN));
 		}
 		if (USER != null){
-			roles1.add(new Role(1L,USER));
+			roles1.add(new Role(2L,USER));
 		}
 		if (ADMIN == null && USER == null){
-			roles1.add(new Role(1L,USER));
+			roles1.add(new Role(2L,USER));
 		}
 		user.setRoles(roles1);
 		userService.updateUser(user);
@@ -92,6 +90,7 @@ public class AdminController {
 	@DeleteMapping(value = "/{id}")
 	public String deleteUser(@PathVariable(value = "id") Long id){
 		userService.delete(id);
+
 		return "redirect:/admin/users";
 	}
 }
