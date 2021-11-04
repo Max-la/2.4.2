@@ -3,7 +3,7 @@ package web.Servise;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import web.Model.Role;
 import web.Model.User;
 
@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import java.util.HashSet;
 
 @Configuration
+@Transactional
 public class DbInit {
 
 	public final UserService userService;

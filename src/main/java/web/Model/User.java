@@ -20,8 +20,11 @@ public class User implements UserDetails {
 	@Column
 	private  String password;
 
-	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+	@ManyToMany(fetch = FetchType.LAZY,targetEntity = Role.class)
+	@JoinTable(name = "users_roles",joinColumns = @JoinColumn(name = "users_id"),
+			inverseJoinColumns = @JoinColumn(name = "roles_id"))
 	public Set<Role> roles;
+
 
 	public User() {
 	}
